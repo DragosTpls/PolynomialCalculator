@@ -12,8 +12,9 @@ public class Panel {
     			  controlLabel2, statusLabel2,
     			  controlLabel3, statusLabel3,
     			  controlLabel4, statusLabel4,
-    			  controlLabel5, statusLabel5;
-    public JPanel pol1, pol2, messages;
+    			  controlLabel5, statusLabel5,
+    			  controlLabel6, statusLabel6;
+    public JPanel pol1, pol2, messages, secondColumn;
     public JTextField polinom, polinom2, valoare;
     public JButton plus, minus, times, divide;
     public int x; // valoarea lui x
@@ -25,8 +26,18 @@ public class Panel {
     private void prepareGUI(){
     	JLabel headerLabel;
         mainFrame = new JFrame("Calculator polinoame");
-        mainFrame.setSize(400,600);
-        mainFrame.setLayout(new FlowLayout());
+        mainFrame.setSize(900,530);
+        mainFrame.setLayout(new GridLayout(1,2));
+        JPanel firstColumn = new JPanel();
+        //JPanel secondColumn = new JPanel();
+        mainFrame.add(firstColumn);
+        //mainFrame.getContentPane().setLayout(null);
+        secondColumn = new JPanel();
+        secondColumn.setLayout(null);
+        secondColumn.setBorder(BorderFactory.createTitledBorder(
+                "Trasare polinom 1"));
+        mainFrame.add(secondColumn);
+        secondColumn.setSize(new Dimension(400, 400));
         
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new GridLayout(0,1));
@@ -130,6 +141,18 @@ public class Panel {
         child_mess5.add(statusLabel5);
         child_mess5.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, Color.black));
         
+        controlLabel6 = new JLabel("", JLabel.LEFT);
+        controlLabel6.setPreferredSize(new Dimension(350,20));
+        controlLabel6.setText("Impartirea celor doua polinoame");
+        statusLabel6 = new JLabel("",JLabel.LEFT);
+        statusLabel6.setVerticalTextPosition(JLabel.TOP);
+        statusLabel6.setPreferredSize(new Dimension(350,20));
+        JPanel child_mess6 = new JPanel();
+        child_mess6.setLayout(new GridLayout(2,1));
+        child_mess6.add(controlLabel6);
+        child_mess6.add(statusLabel6);
+        child_mess6.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, Color.black));
+        
         // Adaugam acum butoanele cu operatiile elementare
         JPanel operatori = new JPanel();
         GridLayout op = new GridLayout(1,4);
@@ -144,18 +167,20 @@ public class Panel {
         operatori.add(times);
         operatori.add(divide);
         
-        mainFrame.add(headerPanel);
-        mainFrame.add(pol0);
-        mainFrame.add(pol1);
-        mainFrame.add(pol2);
-        mainFrame.add(operatori);
-        mainFrame.add(child_mess);
-        mainFrame.add(child_mess2);
-        mainFrame.add(child_mess3);
-        mainFrame.add(child_mess4);
-        mainFrame.add(child_mess5);
-        //mainFrame.add(messages);
-        mainFrame.setVisible(true);
+        firstColumn.add(headerPanel);
+        firstColumn.add(pol0);
+        firstColumn.add(pol1);
+        firstColumn.add(pol2);
+        firstColumn.add(operatori);
+        firstColumn.add(child_mess);
+        firstColumn.add(child_mess2);
+        firstColumn.add(child_mess3);
+        firstColumn.add(child_mess4);
+        firstColumn.add(child_mess5);
+        firstColumn.add(child_mess6);	
+        //firstColumn.add(messages);
+        firstColumn.setVisible(true);
+       
     }
     
     private static JButton createSimpleButton(String text) {

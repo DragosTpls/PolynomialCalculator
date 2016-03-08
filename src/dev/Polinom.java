@@ -25,10 +25,21 @@ public class Polinom {
 		this.x = x;
 	}
 	
+	private Polinom(Monom m, int x) {
+		this.x = x;
+		this.monom.add(m);
+	}
+	
+	private void clean() {
+		for(int i=0;i<monom.size();i++) {
+			if(monom.get(i).coeficient == 0) monom.remove(i);
+		}
+	}
+	
 	public String afisare() {
 		String display_pol = new String("");
 		for(int i=0;i<monom.size();i++) {
-			if(monom.get(i).isNegative()) {
+			if(monom.get(i).coeficient < 0) {
 				display_pol += monom.get(i).getMonom();
 			} else {
 				display_pol += (0 == i) ? monom.get(i).getMonom() : "+" + monom.get(i).getMonom();		
@@ -37,15 +48,15 @@ public class Polinom {
 		return display_pol;
 	}
 	
-	public int valoare() {
-		int s = 0;
+	public double valoare() {
+		double s = 0;
 		for(int i=0;i<monom.size(); i++) {
 			s+=monom.get(i).valoare(x);
 		}
 		return s;
 	}
 	
-	private int getGrad() {
+	public int getGrad() {
 		int c=-1; //nu exista polinom cu grad negativ
 		for(int i=0;i<monom.size();i++) {
 			if(c < monom.get(i).getPutere()) c = monom.get(i).getPutere();
@@ -68,6 +79,18 @@ public class Polinom {
 		 * Collections reprezinta clasa cu care putem trata elementele listelor
 		 * */
 		Collections.sort(this.monom, Monom.getCompByPutere());
+	}
+	
+	public void deriv() {
+		for(int i=0;i<this.monom.size();i++) {
+			this.monom.get(i).deriv();
+		}
+	}
+	
+	public void integ() {
+		for(int i=0;i<this.monom.size();i++) {
+			this.monom.get(i).integ();
+		}
 	}
 	
 	public Polinom add(Polinom poli2) {
@@ -104,18 +127,59 @@ public class Polinom {
 	public Polinom times(Polinom poli2) {
 		Polinom poli3 = new Polinom(x);
 		for(int i=0;i<this.monom.size();i++) {
-			int c1 = this.monom.get(i).getCoeff();
-			int p1 = this.monom.get(i).getPutere();
+			Monom m1 = this.monom.get(i);
 			for(int j=0;j<poli2.monom.size();j++) {
-				int c2 = poli2.monom.get(j).getCoeff();
-				int p2 =  poli2.monom.get(j).getPutere();
+				Monom m2 = poli2.monom.get(j);
+				Monom m3 = m1.times(m2);
 				// Pentru simplificarea procesului, doar adaugam monoamele
-				poli3.monom.add(new Monom(c1*c2, p1+p2));
+				poli3.monom.add(m3);
 			}
 		}
 		poli3.sort_minify();
 		poli3.sort_minify();
 		return poli3;
+	}
+	
+	public Polinom sub(Polinom poli2) {
+		Polinom poli3;
+		for(int i=0;i<poli2.monom.size();i++) {
+			poli2.monom.get(i).coeficient = poli2.monom.get(i).coeficient*(-1);
+		}
+		poli3 = this.add(poli2);
+		poli3.clean();
+		return poli3;
+	}
+	
+	public ArrayList<Polinom> divide(Polinom impartitor) {
+		ArrayList<Polinom> polis = new ArrayList<Polinom>();
+		Polinom cat = new Polinom(x);
+		Polinom rest = new Polinom(x);
+		rest = this;
+		if(rest.getGrad() < impartitor.getGrad()) {
+			cat.monom.add(new Monom(0,0));
+		} else {
+			int i=3;
+			while(rest.getGrad() >= impartitor.getGrad() && i>=0) {
+				Monom dm = cautaMaxim(rest);
+				Monom im = cautaMaxim(impartitor);
+				Monom m = dm.divide(im);
+				System.out.println(dm.getCoeff()+" hhiii " + m.dcoef + " >> " + m.putere);
+				Polinom pm = new Polinom(m, x);
+				cat.monom.add(m);
+				rest = rest.sub(impartitor.times(pm));
+				i--;
+			}
+		}
+		if(rest.monom.isEmpty()) rest.monom.add(new Monom(0,0));
+		polis.add(cat);
+		polis.add(rest);
+		return polis;
+	}
+	
+	private Monom cautaMaxim(Polinom pol) {
+		int putere = pol.getGrad();
+		int iP = pol.getIndexPutere(putere);
+		return pol.monom.get(iP);
 	}
 	
 	private int getIndexPutere(int putere) {
