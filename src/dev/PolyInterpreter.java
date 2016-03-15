@@ -23,13 +23,12 @@ public class PolyInterpreter implements ActionListener {
         String command = e.getActionCommand();
         panel.x = (panel.valoare.getText().isEmpty()) ? 0 : Integer.parseInt(panel.valoare.getText());
         
-        //panel.statusLabel.setPreferredSize(new Dimension(350,30));
         if(command.equals("ok1"))  {
             String buffer = panel.polinom.getText();
         	Polinom poli = this.createPoli(buffer);
         	
         	/* Urm. linii de cod deseneaza pe ecran polinomul */
-        	int newX = (panel.x == 0) ? 5 : (int) Math.sqrt(panel.x*poli.getGrad());
+        	int newX = (panel.x == 0) ? 5 : (int) Math.sqrt(panel.x*poli.getGrad())*5;
         	
         	Cartezian grafic = new Cartezian(400, newX);
         	grafic.setLayout(null);

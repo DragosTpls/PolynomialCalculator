@@ -158,16 +158,15 @@ public class Polinom {
 		if(rest.getGrad() < impartitor.getGrad()) {
 			cat.monom.add(new Monom(0,0));
 		} else {
-			int i=3;
-			while(rest.getGrad() >= impartitor.getGrad() && i>=0) {
+			//int i = 3;
+			while(rest.getGrad() >= impartitor.getGrad()) {
 				Monom dm = cautaMaxim(rest);
 				Monom im = cautaMaxim(impartitor);
 				Monom m = dm.divide(im);
-				System.out.println(dm.getCoeff()+" hhiii " + m.dcoef + " >> " + m.putere);
 				Polinom pm = new Polinom(m, x);
 				cat.monom.add(m);
 				rest = rest.sub(impartitor.times(pm));
-				i--;
+				//i--;
 			}
 		}
 		if(rest.monom.isEmpty()) rest.monom.add(new Monom(0,0));

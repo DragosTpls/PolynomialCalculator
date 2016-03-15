@@ -2,6 +2,11 @@ package dev;
 import javax.swing.JPanel;
 import java.awt.*;
 
+/** Creeaza graficul unei functii
+ * Multumiri http://forum.codecall.net/topic/70235-solvedhelp-plotting-a-function-on-a-graph/
+ * care a creat majoritatea algoritmilor de mai jos(paint component + ticks)
+ * */
+
 public class Cartezian extends JPanel{
 	int size;
 	static double maxValue;
@@ -50,7 +55,7 @@ public class Cartezian extends JPanel{
 		
 		double min = (-maxValue), max = maxValue, ratio = size/(max*2), fx;
         for(;min<=max;min+=0.0025){
-            //preventing round-off error
+            //O rotunjire bruta - interesant oricum
             min=Math.round(min*1000.0)/1000.0;
             fx=Math.round((this.f(min))*1000.0)/1000.0;
             g.drawLine((int)(size/2+(ratio*min)), (int)(size/2-(ratio*fx)),
@@ -68,7 +73,8 @@ public class Cartezian extends JPanel{
 		return sum;
 	}
 	
-	//finds the values of the ticks on the axis e.g. -2.0, -1.5, -1.0, -0.5, 0.0, etc
+	// Gaseste valorile punctelor din dreptul fiecarei liniute(segment) de la axa
+	// Multimiri 
 	private static double[] getTicks(){
 		double increment = maxValue / 5, currentTick = -1*(maxValue);
 		double[] tick = new double[9];
