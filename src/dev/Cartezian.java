@@ -1,3 +1,8 @@
+/**
+* @author  Ștefănescu Marian
+* @site http://code-it.ro
+* @version 1.0
+*/
 package dev;
 import javax.swing.JPanel;
 import java.awt.*;
